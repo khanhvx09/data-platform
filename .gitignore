@@ -1,0 +1,12 @@
+/unitycatalog/
+/data_platform/
+/work/spark-warehouse/
+/work/metastore_db/
+/drivers/
+/work/sdp/spark-warehouse
+/zeppelin/notebook/
+/zeppelin/logs/
+/airflow/logs
+airflow/**/profiles.yml
+project/**/data/
+.env

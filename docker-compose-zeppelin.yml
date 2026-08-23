@@ -1,0 +1,135 @@
+services:
+  spark-master:
+    image: deltaio/delta-docker:4.3.1
+    container_name: spark-master
+    entrypoint: ["bash", "/opt/startup.sh"]
+    stdin_open: true   # docker run -i
+    tty: true          # docker run -t
+    ports:
+      - "8888:8888"    # Jupyter Lab, used by startup.sh
+      - "7077:7077"    # Spark RPC, used by spark-worker
+      - "8080:8080"    # Spark master Web UI
+      - "4040:4040"    # Spark Application UI (active job/SQL/stages)
+    volumes:
+      - ./startup.sh:/opt/startup.sh:ro
+      - ./startup-sdp.sh:/opt/startup-sdp.sh:ro
+      - ./requirements.txt:/opt/requirements.txt:ro
+      - ./work:/opt/work
+      # Hadoop picks up fs.s3a.* from any *-site.xml under $SPARK_HOME/conf,
+      # so the driver gets its MinIO/S3A settings from here instead of a
+      # wall of --conf spark.hadoop.fs.s3a.* flags in startup.sh.
+      - ./hive-metastore/core-site.xml:/opt/spark/conf/core-site.xml:ro
+    working_dir: /opt
+    depends_on:
+      - hive-metastore
+
+  spark-worker:
+    image: deltaio/delta-docker:4.3.1
+    container_name: spark-worker
+    entrypoint: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://spark-master:7077"]
+    environment:
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2g
+      SPARK_WORKER_DIR: /tmp/spark-work    # /opt/spark isn't writable by NBuser
+    volumes:
+      # Executors read Hadoop config from their own local $SPARK_HOME/conf,
+      # not from the driver's — needs the same file here too.
+      - ./hive-metastore/core-site.xml:/opt/spark/conf/core-site.xml:ro
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"    # Spark worker Web UI
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"    # S3 API
+      - "9001:9001"    # Web console
+    volumes:
+      - ./data_platform:/data
+
+  metastore-db:
+    image: postgres:15
+    container_name: metastore-db
+    environment:
+      POSTGRES_DB: hive
+      POSTGRES_USER: hive
+      POSTGRES_PASSWORD: hive
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hive -d hive"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"    # Postgres
+    volumes:
+      - metastore_db_data:/var/lib/postgresql/data
+
+  hive-metastore:
+    image: apache/hive:4.0.0
+    container_name: hive-metastore
+    environment:
+      SERVICE_NAME: metastore
+      DB_DRIVER: postgres
+      SERVICE_OPTS: >-
+        -Djavax.jdo.option.ConnectionDriverName=org.postgresql.Driver
+        -Djavax.jdo.option.ConnectionURL=jdbc:postgresql://metastore-db:5432/hive
+        -Djavax.jdo.option.ConnectionUserName=hive
+        -Djavax.jdo.option.ConnectionPassword=hive
+      # Puts the S3A + AWS SDK jars (already bundled under Hadoop's tools/lib)
+      # on the metastore's classpath so it can create/validate s3a:// locations.
+      HADOOP_CLASSPATH: /opt/hadoop/share/hadoop/tools/lib/*
+    ports:
+      - "9083:9083"    # Thrift metastore API
+    volumes:
+      - ./drivers/postgresql.jar:/opt/hive/lib/postgresql.jar:ro
+      - ./hive-metastore/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
+    depends_on:
+      metastore-db:
+        condition: service_healthy
+
+  zeppelin:
+    build: ./zeppelin
+    container_name: zeppelin
+    environment:
+      ZEPPELIN_ADDR: 0.0.0.0
+      # Zeppelin's spark interpreter seeds spark.master/SPARK_HOME from these
+      # env vars the first time it generates conf/interpreter.json, so the
+      # interpreter targets our cluster out of the box (no manual UI step).
+      SPARK_HOME: /opt/spark
+      SPARK_MASTER: spark://spark-master:7077
+      # Read by configure-spark-interpreter.sh to mirror startup.sh's Hive
+      # metastore / Delta --conf flags onto the spark interpreter, so
+      # notebooks see the same catalog and tables. S3A/MinIO settings come
+      # from the mounted core-site.xml below instead, same as spark-master.
+      HIVE_METASTORE_URIS: thrift://hive-metastore:9083
+      DELTA_PACKAGE_VERSION: delta-spark_4.1_2.13:4.3.1
+      HADOOP_AWS_PACKAGE_VERSION: org.apache.hadoop:hadoop-aws:3.4.1
+    ports:
+      - "8082:8080"    # Zeppelin Web UI (8080 already used by spark-master)
+    volumes:
+      - ./zeppelin/notebook:/opt/zeppelin/notebook
+      # Named volume (not a bind mount) so the image's baked-in conf files
+      # (log4j, templates) seed it on first run instead of being hidden by
+      # an empty host directory, while interpreter.json still persists.
+      - zeppelin_conf:/opt/zeppelin/conf
+      - ./zeppelin/logs:/opt/zeppelin/logs
+      - ./hive-metastore/core-site.xml:/opt/spark/conf/core-site.xml:ro
+      # Ivy cache for the spark interpreter's --packages jars (Delta/Hadoop-
+      # AWS/AWS-SDK, ~300MB). Without this it's under /tmp, which is wiped
+      # on every container restart and forces a slow re-download each time.
+      - zeppelin_ivy_cache:/opt/zeppelin/ivy-cache
+    depends_on:
+      - spark-master
+      - hive-metastore
+      - minio
+
+volumes:
+  metastore_db_data:
+  zeppelin_conf:
+  zeppelin_ivy_cache:

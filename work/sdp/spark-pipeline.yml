@@ -1,0 +1,5 @@
+name: sdp_demo
+storage: file:///opt/work/sdp/pipeline-storage
+libraries:
+  - glob:
+      include: transformations/**

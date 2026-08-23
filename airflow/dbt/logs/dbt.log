@@ -1,0 +1,133 @@
+[0m16:45:39.212168 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a5b1940>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10b709df0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10b709a90>]}
+
+
+============================== 16:45:39.233902 | 0851f27c-d535-4cce-a638-61641605aa63 ==============================
+[0m16:45:39.233902 [info ] [MainThread]: Running with dbt=1.11.11
+[0m16:45:39.234260 [debug] [MainThread]: running dbt with arguments {'no_print': 'None', 'log_format': 'default', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'version_check': 'True', 'log_path': 'logs', 'debug': 'False', 'profiles_dir': '/Users/khanhvu/.dbt', 'invocation_command': 'dbt init data-platform', 'fail_fast': 'False', 'empty': 'None', 'quiet': 'False', 'static_parser': 'True', 'introspect': 'True', 'partial_parse': 'True', 'target_path': 'None', 'printer_width': '80', 'use_experimental_parser': 'False', 'cache_selected_only': 'False', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'warn_error': 'None', 'send_anonymous_usage_stats': 'True', 'use_colors': 'True', 'write_json': 'True'}
+[0m16:45:52.908710 [debug] [MainThread]: Starter project path: /Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/include/starter_project
+[0m16:45:52.923984 [info ] [MainThread]: 
+Your new dbt project "data_platform" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m16:45:52.925299 [info ] [MainThread]: Setting up your profile.
+[0m16:45:57.129781 [debug] [MainThread]: Spark adapter: Setting pyhive.hive logging to ERROR
+[0m16:45:57.130368 [debug] [MainThread]: Spark adapter: Setting thrift.transport logging to ERROR
+[0m16:45:57.130528 [debug] [MainThread]: Spark adapter: Setting thrift.protocol logging to ERROR
+[0m16:47:58.580215 [error] [MainThread]: Encountered an error:
+
+[0m16:47:58.591481 [error] [MainThread]: Traceback (most recent call last):
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/cli/requires.py", line 182, in wrapper
+    result, success = func(*args, **kwargs)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/cli/requires.py", line 128, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/cli/main.py", line 488, in init
+    results = task.run()
+              ^^^^^^^^^^
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/task/init.py", line 346, in run
+    self.setup_profile(profile_name)
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/task/init.py", line 262, in setup_profile
+    self.create_profile_from_target(adapter, profile_name=profile_name)
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/task/init.py", line 179, in create_profile_from_target
+    self.create_profile_from_profile_template(profile_template, profile_name)
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/task/init.py", line 163, in create_profile_from_profile_template
+    target = self.generate_target_from_input(prompts, initial_target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/dbt/task/init.py", line 129, in generate_target_from_input
+    target[key] = click.prompt(
+                  ^^^^^^^^^^^^^
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/click/termui.py", line 218, in prompt
+    value = prompt_func(prompt)
+            ^^^^^^^^^^^^^^^^^^^
+  File "/Users/khanhvu/Documents/Goal/lake-house/.venv/lib/python3.12/site-packages/click/termui.py", line 201, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m16:47:58.593495 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": false, "command_wall_clock_time": 139.42607, "process_in_blocks": "0", "process_kernel_time": 0.489446, "process_mem_max_rss": "138313728", "process_out_blocks": "0", "process_user_time": 1.673575}
+[0m16:47:58.594464 [debug] [MainThread]: Command `dbt init` failed at 16:47:58.594355 after 139.43 seconds
+[0m16:47:58.595140 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10b7625a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10afdbfb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10bc31190>]}
+[0m16:47:58.595595 [debug] [MainThread]: Flushing usage events
+[0m22:05:04.583746 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108dda180>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10bbb4aa0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10bbb4f80>]}
+
+
+============================== 22:05:04.604046 | 27479203-560b-4fa5-abad-fa59d45b01f9 ==============================
+[0m22:05:04.604046 [info ] [MainThread]: Running with dbt=1.12.3
+[0m22:05:04.604402 [debug] [MainThread]: running dbt with arguments {'quiet': 'False', 'use_colors': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'hints_enabled': 'True', 'invocation_command': 'dbt init zomato', 'empty': 'None', 'indirect_selection': 'eager', 'partial_parse': 'True', 'version_check': 'True', 'introspect': 'True', 'profiles_dir': '/Users/khanhvu/.dbt', 'static_parser': 'True', 'target_path': 'None', 'printer_width': '80', 'debug': 'False', 'cache_selected_only': 'False', 'log_cache_events': 'False', 'maximum_seed_size_mib': '1', 'no_print': 'None', 'warn_error': 'None', 'send_anonymous_usage_stats': 'True', 'use_experimental_parser': 'False', 'log_format': 'default', 'write_json': 'True', 'log_path': 'logs', 'fail_fast': 'False'}
+[0m22:05:04.641565 [debug] [MainThread]: Starter project path: /Users/khanhvu/Documents/Goal/data-platform/.venv/lib/python3.12/site-packages/dbt/include/starter_project
+[0m22:05:04.645679 [info ] [MainThread]: Setting up your profile.
+[0m22:05:08.694453 [debug] [MainThread]: Spark adapter: Setting pyhive.hive logging to ERROR
+[0m22:05:08.694799 [debug] [MainThread]: Spark adapter: Setting thrift.transport logging to ERROR
+[0m22:05:08.694988 [debug] [MainThread]: Spark adapter: Setting thrift.protocol logging to ERROR
+[0m22:11:20.657174 [info ] [MainThread]: Profile zomato written to /Users/khanhvu/.dbt/profiles.yml using target's profile_template.yml and your supplied values.
+[0m22:11:20.672852 [info ] [MainThread]: Running dbt debug to validate the project...
+[0m22:11:20.674254 [info ] [MainThread]: dbt version: 1.12.3
+[0m22:11:20.674485 [info ] [MainThread]: python version: 3.12.12
+[0m22:11:20.674658 [info ] [MainThread]: python path: /Users/khanhvu/Documents/Goal/data-platform/.venv/bin/python
+[0m22:11:20.674845 [info ] [MainThread]: os info: macOS-26.5.2-arm64-arm-64bit
+[0m22:11:20.706949 [info ] [MainThread]: Using profiles dir at /Users/khanhvu/.dbt
+[0m22:11:20.707271 [info ] [MainThread]: Using profiles.yml file at /Users/khanhvu/.dbt/profiles.yml
+[0m22:11:20.707440 [info ] [MainThread]: Using dbt_project.yml file at /Users/khanhvu/Documents/Goal/data-platform/airflow/dbt/zomato/dbt_project.yml
+[0m22:11:20.707602 [info ] [MainThread]: adapter type: databricks
+[0m22:11:20.707738 [info ] [MainThread]: adapter version: 1.10.9
+[0m22:11:20.761950 [info ] [MainThread]: Configuration:
+[0m22:11:20.762264 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m22:11:20.762433 [info ] [MainThread]:   dbt_project.yml file [[32mOK found and valid[0m]
+[0m22:11:20.762572 [info ] [MainThread]: Required dependencies:
+[0m22:11:20.762856 [debug] [MainThread]: Executing "git --help"
+[0m22:11:20.781346 [debug] [MainThread]: STDOUT: "b"usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--no-lazy-fetch]\n           [--no-optional-locks] [--no-advice] [--bare] [--git-dir=<path>]\n           [--work-tree=<path>] [--namespace=<name>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone      Clone a repository into a new directory\n   init       Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add        Add file contents to the index\n   mv         Move or rename a file, a directory, or a symlink\n   restore    Restore working tree files\n   rm         Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect     Use binary search to find the commit that introduced a bug\n   diff       Show changes between commits, commit and working tree, etc\n   grep       Print lines matching a pattern\n   log        Show commit logs\n   show       Show various types of objects\n   status     Show the working tree status\n\ngrow, mark and tweak your common history\n   backfill   Download missing objects in a partial clone\n   branch     List, create, or delete branches\n   commit     Record changes to the repository\n   merge      Join two or more development histories together\n   rebase     Reapply commits on top of another base tip\n   reset      Reset current HEAD to the specified state\n   switch     Switch branches\n   tag        Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch      Download objects and refs from another repository\n   pull       Fetch from and integrate with another repository or a local branch\n   push       Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m22:11:20.781990 [debug] [MainThread]: STDERR: "b''"
+[0m22:11:20.782209 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m22:11:20.782396 [info ] [MainThread]: Connection:
+[0m22:11:20.782611 [info ] [MainThread]:   host: dbc-f57acca2-24b2.cloud.databricks.com
+[0m22:11:20.782755 [info ] [MainThread]:   http_path: /sql/1.0/warehouses/d4f14ffc3c9fa3ae
+[0m22:11:20.782886 [info ] [MainThread]:   catalog: zomato
+[0m22:11:20.783070 [info ] [MainThread]:   schema: default
+[0m22:11:20.783626 [info ] [MainThread]: Registered adapter: databricks=1.10.9
+[0m22:11:20.973397 [debug] [MainThread]: Databricks adapter: DatabricksDBTConnection(session-id=None, name=debug) - Creating connection
+[0m22:11:20.973795 [debug] [MainThread]: Acquiring new databricks connection 'debug'
+[0m22:11:20.974016 [debug] [MainThread]: Using databricks connection "debug"
+[0m22:11:20.974184 [debug] [MainThread]: On debug: select 1 as id
+[0m22:11:20.974318 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m22:11:23.684584 [debug] [MainThread]: Databricks adapter: Connection(session-id=01f19e33-5a75-1442-9220-d2623607e578) - Created
+[0m22:11:32.942700 [debug] [MainThread]: SQL status: OK in 11.970 seconds
+[0m22:11:32.951247 [debug] [MainThread]: Databricks adapter: Cursor(session-id=01f19e33-5a75-1442-9220-d2623607e578, command-id=01f19e33-5b5a-125e-992a-c12e68e29701) - Closing
+[0m22:11:33.437009 [debug] [MainThread]: On debug: Close
+[0m22:11:33.438176 [debug] [MainThread]: Databricks adapter: Connection(session-id=01f19e33-5a75-1442-9220-d2623607e578) - Closing
+[0m22:11:33.735276 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m22:11:33.740344 [info ] [MainThread]: [32mAll checks passed![0m
+[0m22:11:33.742727 [info ] [MainThread]: Your new dbt project "zomato" was created!
+Initialized new project in /Users/khanhvu/Documents/Goal/data-platform/airflow/dbt/zomato/zomato
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m22:11:33.745779 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 389.21335, "process_in_blocks": "0", "process_kernel_time": 1.105698, "process_mem_max_rss": "307314688", "process_out_blocks": "0", "process_user_time": 4.235898}
+[0m22:11:33.746555 [debug] [MainThread]: Command `dbt init` succeeded at 22:11:33.746347 after 389.21 seconds
+[0m22:11:33.747124 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10aa929f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10e56d4c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109615ca0>]}
+[0m22:11:33.747506 [debug] [MainThread]: Flushing usage events
+[0m22:11:34.786875 [debug] [MainThread]: An error was encountered while trying to flush usage events

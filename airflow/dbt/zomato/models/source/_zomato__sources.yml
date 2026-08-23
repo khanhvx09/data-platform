@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: zomato # Unity Catalog catalog name
+    schema: bronze
+    tables:
+      - name: restaurants
+      - name: users
+      - name: food
+      - name: menu
+      - name: orders
+      - name: order_items
+      - name: reviews
